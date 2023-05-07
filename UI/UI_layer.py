@@ -17,16 +17,21 @@ class UILayer:
         self.UI_elements = list(UI_elements)
         self.mouse_pos = pygame.mouse.get_pos()
 
-    def input(self, pressed_keys):
+    def input(self, keys):
         self.mouse_pos = pygame.mouse.get_pos()
 
     def update(self):
         for UI_i in self.UI_elements:
             if isinstance(UI_i, Button):
-                mouse_in = UI_i.rect.collidepoint(self.mouse_pos)
-                UI_i.mouse_enter = (not UI_i.selected) and mouse_in
-                UI_i.mouse_leave = UI_i.selected and (not mouse_in)
+                self.select_button(UI_i)
+                if UI_i.selected:
+                    UI_i.action()
             UI_i.update()
+    
+    def select_button(self, button: Button):
+        mouse_in = button.rect.collidepoint(self.mouse_pos)
+        button.mouse_enter = (not button.selected) and mouse_in
+        button.mouse_leave = button.selected and (not mouse_in)
 
     def draw(self):
         for UI_i in self.UI_elements:

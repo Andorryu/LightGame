@@ -27,9 +27,10 @@ class MainMenu:
                 bg_color_sel=colors.LIGHT_GRAY
             )
         )
+        self.UI_layer.UI_elements[1].action = goto_game
 
-    def input(self, pressed_keys):
-        self.UI_layer.input(pressed_keys)
+    def input(self, keys):
+        self.UI_layer.input(keys)
 
     def update(self):
         self.UI_layer.update()

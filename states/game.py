@@ -1,10 +1,19 @@
 """
     interface for all playable levels
 """
-
-from state import State
+import pygame
+from states.state import State
+from player import Player
 
 class Game(State):
     def __init__(self) -> None:
-        super().__init__()
-        
+        self.player = Player()
+
+    def input(self, keys):
+        self.player.input(keys)
+
+    def update(self):
+        self.player.update()
+
+    def draw(self):
+        self.player.draw()

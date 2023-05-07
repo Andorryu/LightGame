@@ -3,53 +3,24 @@
     Contains:
     - running
     - fps
+    - window and display info
     - game state
 """
 import pygame
+from vector import Vector
+from states.main_menu import MainMenu
+pygame.init()
 
-class Vector:
-    def __init__(self, x, y):
-        self.x = x
-        self.y = y
+win_info = pygame.display.Info() # get display info
+screen_res = Vector(1600, 900, Vector.SCREEN_RES) # get display dimensions
 
-    @classmethod
-    def from_tuple(cls, tup):
-        x, y = tup
-        return cls(x, y)
-    
-    def __add__(self, o):
-        if isinstance(o, Vector):
-            return self.x + o.x, self.y + o.y
-        elif isinstance(o, int):
-            return self.x + o, self.y + o
-        
-    def __mul__(self, o):
-        if isinstance(o, Vector):
-            return self.x * o.x, self.y * o.y
-        elif isinstance(o, int):
-            return self.x * o, self.y * o
-        
-    def __truediv__(self, o):
-        if isinstance(o, Vector):
-            return round(self.x / o.x), round(self.y / o.y)
-        elif isinstance(o, int):
-            return round(self.x / o), round(self.y / o)
-        
-    def __floordiv__(self, o):
-        if isinstance(o, Vector):
-            return self.x // o.x, self.y // o.y
-        elif isinstance(o, int):
-            return self.x // o, self.y // o
+# game space: resolution of the game's 2D space - the higher the better
+game_space = Vector(3840, 2160)
 
-    def __eq__(self, o):
-        if isinstance(o, Vector):
-            return self.x == o.x and self.y == o.y
+# create window, running, and fps
+window = pygame.display.set_mode(screen_res.as_tuple()) # make screen as big as screen resolution
+running = True # must be set to True for game to run
+fps = 60 # change this for default fps
 
-running = True
-fps = 60
-
-win_info = pygame.display.Info()
-screen_res = (win_info.current_w, win_info.current_h)
-window = pygame.display.set_mode(screen_res)
-
-
+# starting game state
+game_state = MainMenu()

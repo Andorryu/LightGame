@@ -2,36 +2,39 @@
     Program's entry point and location of outermost game loop.
 """
 import pygame
-pygame.init()
-import globals as g
+import globals
+import colors
 
-class Game:
+class App:
     def __init__(self):
-        self.keys = pygame.key.get_pressed()
+        pass
 
     def run(self):
         clock = pygame.time.Clock()
-        while (g.running):
+        while (globals.running):
             self.input()
             self.update()
             self.draw()
-            clock.tick(g.fps)
+            clock.tick(globals.fps)
 
     def input(self):
         # close the game
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
-                g.running = False
+                globals.running = False
         
         # collect key presses
-        self.keys = pygame.key.get_pressed()
+        keys = pygame.key.get_pressed()
+        globals.game_state.input(keys)
 
     def update(self):
-        pass
+        globals.game_state.update()
     
     def draw(self):
-        pass
+        globals.window.fill(colors.BLACK)
+        globals.game_state.draw()
+        pygame.display.flip()
 
 if __name__ == '__main__':
-    game = Game()
-    game.run()
+    app = App()
+    app.run()

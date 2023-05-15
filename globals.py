@@ -9,6 +9,7 @@
 import pygame
 from vector import Vector
 from states.main_menu import MainMenu
+from states.game import Game
 pygame.init()
 
 win_info = pygame.display.Info() # get display info
@@ -23,4 +24,4 @@ running = True # must be set to True for game to run
 fps = 60 # change this for default fps
 
 # starting game state
-game_state = MainMenu()
+game_state = Game()

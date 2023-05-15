@@ -19,12 +19,13 @@ class UILayer:
 
     def input(self, keys):
         self.mouse_pos = pygame.mouse.get_pos()
+        self.left, self.middle, self.right = pygame.mouse.get_pressed()
 
     def update(self):
         for UI_i in self.UI_elements:
             if isinstance(UI_i, Button):
                 self.select_button(UI_i)
-                if UI_i.selected:
+                if UI_i.selected and self.left:
                     UI_i.action()
             UI_i.update()
     

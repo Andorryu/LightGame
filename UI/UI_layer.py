@@ -7,7 +7,7 @@
 import pygame
 import globals as g
 from UI.UI_element import UIElement, Text, Button, Switch
-from vector import Vector
+from utils.vector import Vector
 
 class UILayer:
     def __init__(self, *UI_elements: UIElement) -> None:

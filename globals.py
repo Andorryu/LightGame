@@ -7,16 +7,24 @@
     - game state
 """
 import pygame
-from vector import Vector
+from utils.vector import Vector
 from states.main_menu import MainMenu
 from states.game import Game
 pygame.init()
+
+# for the frame that condition is true, bool becomes true. Every frame after, it is false
+def edge_trigger(condition: bool, trigger: bool):
+    if trigger:
+        trigger = False
+    if condition:
+        trigger = True
+    return trigger
 
 win_info = pygame.display.Info() # get display info
 screen_res = Vector(1600, 900, Vector.SCREEN_RES) # get display dimensions
 
 # game space: resolution of the game's 2D space - the higher the better
-game_space = Vector(3840, 2160)
+game_space = Vector(16000, 9000)
 
 # create window, running, and fps
 window = pygame.display.set_mode(screen_res.as_tuple()) # make screen as big as screen resolution

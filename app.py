@@ -2,8 +2,8 @@
     Program's entry point and location of outermost game loop.
 """
 import pygame
-import globals
-import colors
+import globals 
+import utils.colors as colors
 
 class App:
     def __init__(self):

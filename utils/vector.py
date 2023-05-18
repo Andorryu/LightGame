@@ -25,7 +25,7 @@ class Vector:
         return self.x, self.y
     
     # make compatible with pygame (convert to screen res mode and return as tuple)
-    def compatible(self) -> tuple(int, int):
+    def compat(self) -> tuple(int, int):
         match self.mode:
             case Vector.SCREEN_RES:
                 return self.as_tuple()

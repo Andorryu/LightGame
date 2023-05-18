@@ -3,10 +3,10 @@
 """
 from UI.UI_layer import UILayer
 from UI.UI_element import UIElement, Text, Button, Switch
-from vector import Vector
+from utils.vector import Vector
 from states.game import Game
 import globals
-import colors
+import utils.colors as colors
 
 def goto_game():
     globals.game_state = Game()

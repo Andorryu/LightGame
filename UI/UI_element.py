@@ -5,9 +5,9 @@
     Switch
 """
 import pygame
-import colors
+import utils.colors as colors
 import globals
-from vector import Vector
+from utils.vector import Vector
 
 def to_screen_res_y(num: int):
     return round((num * globals.screen_res.y) / globals.game_space.y)
@@ -40,23 +40,23 @@ class UIElement:
         # position based on pos_mode
         match pos_mode:
             case UIElement.TOPLEFT:
-                self.rect = self.surf.get_rect(topleft=pos.compatible())
+                self.rect = self.surf.get_rect(topleft=pos.compat())
             case UIElement.CENTER:
-                self.rect = self.surf.get_rect(center=pos.compatible())
+                self.rect = self.surf.get_rect(center=pos.compat())
             case UIElement.TOPRIGHT:
-                self.rect = self.surf.get_rect(topright=pos.compatible())
+                self.rect = self.surf.get_rect(topright=pos.compat())
             case UIElement.BOTTOMLEFT:
-                self.rect = self.surf.get_rect(bottomleft=pos.compatible())
+                self.rect = self.surf.get_rect(bottomleft=pos.compat())
             case UIElement.BOTTOMRIGHT:
-                self.rect = self.surf.get_rect(bottomright=pos.compatible())
+                self.rect = self.surf.get_rect(bottomright=pos.compat())
             case UIElement.CENTERLEFT:
-                self.rect = self.surf.get_rect(midleft=pos.compatible())
+                self.rect = self.surf.get_rect(midleft=pos.compat())
             case UIElement.CENTERTOP:
-                self.rect = self.surf.get_rect(midtop=pos.compatible())
+                self.rect = self.surf.get_rect(midtop=pos.compat())
             case UIElement.CENTERRIGHT:
-                self.rect = self.surf.get_rect(midright=pos.compatible())
+                self.rect = self.surf.get_rect(midright=pos.compat())
             case UIElement.CENTERBOTTOM:
-                self.rect = self.surf.get_rect(midbottom=pos.compatible())
+                self.rect = self.surf.get_rect(midbottom=pos.compat())
 
 class Text(UIElement):
     def __init__(

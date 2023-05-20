@@ -7,6 +7,7 @@ from utils.vector import Vector
 from utils.animation import Animation
 from utils.spritesheet import Spritesheet
 from game_platform import Platform
+from entity import Entity
 
 class Ray:
     def __init__(self, p1: Vector, p2: Vector) -> None:
@@ -16,7 +17,7 @@ class Ray:
     def compat(self) -> tuple[tuple, tuple]:
         return self.p1.compat(), self.p2.compat()
 
-class Player:
+class Player(Entity):
     
     SURF_RATIO = Vector(5, 9)
     RECT_RATIO = Vector(2, 9)
@@ -91,9 +92,3 @@ class Player:
             globals.window.blit(pygame.transform.flip(self.current_anim.current_frame, True, False), self.rect)
         else:
             globals.window.blit(self.current_anim.current_frame, self.rect)
-
-    def check_platform_collision(self, platforms: list[Platform]):
-        self.grounded = False
-        for platform in platforms:
-            if platform.rect.clipline(self.ray.compat()):
-                self.grounded = True

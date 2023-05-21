@@ -1,6 +1,6 @@
 """
     Player character
-"""
+""" 
 import pygame
 import globals
 from utils.vector import Vector
@@ -42,6 +42,7 @@ class Player(Entity):
         self.grounded = False
         self.stop_fall = False
         self.dir = Player.RIGHT
+        self.rect = self.current_anim.current_frame.get_rect(center=self.pos.compat(), size=(self.rect_size).compat())
         # controls
         self.moveleft = False
         self.moveright = False
@@ -52,16 +53,10 @@ class Player(Entity):
         self.moveright = keys[pygame.K_d]
         self.jump = keys[pygame.K_w] or keys[pygame.K_SPACE]
 
-    def update(self):
-        # create new rect every update for player movement(maybe this is optimizable?)
-        self.rect = self.current_anim.current_frame.get_rect(center=self.pos.compat(), size=(self.rect_size).compat())
+    def update(self, platforms):
         # gravity
         if not self.grounded:
             self.velocity.y += self.gravity
-
-        self.stop_fall = globals.edge_trigger(self.grounded, self.stop_fall)
-        if self.stop_fall:
-            self.velocity.y = 0
 
         # move left and right
         if self.moveleft:
@@ -83,6 +78,9 @@ class Player(Entity):
         self.pos += self.velocity
         self.ray.p1 += self.velocity # ray stays under player
         self.ray.p2 += self.velocity
+        
+        # create new rect every update for player movement(maybe this is optimizable?)
+        self.rect = self.current_anim.current_frame.get_rect(center=self.pos.compat(), size=(self.rect_size).compat())
 
         # update animation frame
         self.current_anim.update()

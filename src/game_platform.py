@@ -6,6 +6,7 @@ from utils.vector import Vector
 import globals
 import utils.colors as colors
 from entity import Entity
+from utils.collider import Collider
 
 class Platform(Entity):
     def __init__(self, pos: Vector=None, size: Vector=Vector(12000, 1000)) -> None:
@@ -13,10 +14,11 @@ class Platform(Entity):
             self.pos = globals.game_space/2 + Vector(0, 3500)
         else:
             self.pos = pos
-        self.size = size
+
+        self.collider = Collider(self.pos, size)
         self.surf = pygame.Surface(size.compat())
-        self.rect = self.surf.get_rect(center=self.pos.compat())
 
     def draw(self):
         self.surf.fill(colors.ORANGE)
-        globals.window.blit(self.surf, self.rect)
+        rect = self.surf.get_rect(center=self.pos.compat())
+        globals.window.blit(self.surf, rect)

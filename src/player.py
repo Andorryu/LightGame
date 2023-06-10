@@ -9,14 +9,6 @@ from utils.spritesheet import Spritesheet
 from game_platform import Platform
 from entity import Entity
 
-class Ray:
-    def __init__(self, p1: Vector, p2: Vector) -> None:
-        self.p1 = p1
-        self.p2 = p2
-
-    def compat(self) -> tuple[tuple, tuple]:
-        return self.p1.compat(), self.p2.compat()
-
 class Player(Entity):
     
     SURF_RATIO = Vector(5, 9)

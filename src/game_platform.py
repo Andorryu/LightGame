@@ -18,5 +18,5 @@ class Platform(Entity):
         self.rect = self.surf.get_rect(center=self.pos.compat())
 
     def draw(self):
-        self.surf.fill(colors.WHITE)
+        self.surf.fill(colors.ORANGE)
         globals.window.blit(self.surf, self.rect)

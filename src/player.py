@@ -53,7 +53,7 @@ class Player(Entity):
         self.moveright = keys[pygame.K_d]
         self.jump = keys[pygame.K_w] or keys[pygame.K_SPACE]
 
-    def update(self, platforms):
+    def update(self):
         # gravity
         if not self.grounded:
             self.velocity.y += self.gravity

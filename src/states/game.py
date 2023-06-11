@@ -9,11 +9,10 @@ from utils.vector import Vector
 import utils.colors as colors
 from game_platform import Platform
 from entity import Entity
-from test_block import Block
 
 class Game(State):
     def __init__(self) -> None:
-        self.player = Block()
+        self.player = Player()
         self.platforms: list[Platform] = [
             Platform()
         ]

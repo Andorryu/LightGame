@@ -8,33 +8,37 @@ from utils.animation import Animation
 from utils.spritesheet import Spritesheet
 from game_platform import Platform
 from entity import Entity
+from utils.collider import Collider
+from utils.physics import Physics
 
 class Player(Entity):
     
     SURF_RATIO = Vector(5, 9)
     RECT_RATIO = Vector(2, 9)
+    SCALE = 200
     LEFT = 0
     RIGHT = 1
 
     def __init__(self) -> None:
         # load animation and scale frames
-        self.scale = 200
-        self.surf_size = Player.SURF_RATIO*self.scale
-        self.rect_size = Player.RECT_RATIO*self.scale
+        self.surf_size = Player.SURF_RATIO*Player.SCALE
         self.idle_anim = Animation(Spritesheet("img/idle.png").slice(Vector(10, 1), self.surf_size), 1000*1)
         self.run_anim = Animation(Spritesheet("img/run.png").slice(Vector(3, 3), self.surf_size), 1000*.3)
         self.current_anim = self.idle_anim
         # position, speed, gravity
-        self.pos = globals.game_space/2
-        self.velocity = Vector(0, 0)
-        self.speed = 70
+        self.physics = Physics(
+            pos = globals.game_space/2,
+            velocity = Vector(0, 0),
+            acceleration = (0, 5)
+        )
+        self.collider = Collider(
+            pos = self.physics.pos,
+            size = Player.RECT_RATIO*Player.SCALE
+        )
+        self.run_speed = 70
         self.jump_speed = 100
-        self.gravity = 5
-        self.ray = Ray(self.pos + Vector(-self.rect_size.x/2, self.rect_size.y/2 + 10), self.pos + Vector(self.rect_size.x/2, self.rect_size.y/2 + 10))
         self.grounded = False
-        self.stop_fall = False
         self.dir = Player.RIGHT
-        self.rect = self.current_anim.current_frame.get_rect(center=self.pos.compat(), size=(self.rect_size).compat())
         # controls
         self.moveleft = False
         self.moveright = False
@@ -45,40 +49,34 @@ class Player(Entity):
         self.moveright = keys[pygame.K_d]
         self.jump = keys[pygame.K_w] or keys[pygame.K_SPACE]
 
-    def update(self):
-        # gravity
-        if not self.grounded:
-            self.velocity.y += self.gravity
+    def update(self, platforms: list[Platform]):
 
         # move left and right
         if self.moveleft:
-            self.velocity.x = -self.speed
+            self.physics.velocity.x = -self.run_speed
             self.current_anim = self.run_anim
             self.dir = Player.LEFT
         elif self.moveright:
-            self.velocity.x = self.speed
+            self.physics.velocity.x = self.run_speed
             self.current_anim = self.run_anim
             self.dir = Player.RIGHT
         else:
             self.current_anim = self.idle_anim
-            self.velocity.x = 0
+            self.physics.velocity.x = 0
         # jump
-        if self.grounded and self.jump:
-            self.velocity.y -= self.jump_speed
+        if self.jump:
+            self.physics.velocity.y -= self.jump_speed
 
-        # update position
-        self.pos += self.velocity
-        self.ray.p1 += self.velocity # ray stays under player
-        self.ray.p2 += self.velocity
-        
-        # create new rect every update for player movement(maybe this is optimizable?)
-        self.rect = self.current_anim.current_frame.get_rect(center=self.pos.compat(), size=(self.rect_size).compat())
-
+        # physics
+        self.physics.update()
+        # collider
+        for pf in platforms:
+            self.physics.pos = self.collider.update_hard_collision(self.physics.pos, pf.collider)
         # update animation frame
         self.current_anim.update()
 
     def draw(self):
         if self.dir == Player.LEFT:
-            globals.window.blit(pygame.transform.flip(self.current_anim.current_frame, True, False), self.rect)
+            globals.window.blit(pygame.transform.flip(self.current_anim.current_frame, True, False), self.collider.get_topleft().compat())
         else:
-            globals.window.blit(self.current_anim.current_frame, self.rect)
+            globals.window.blit(self.current_anim.current_frame, self.collider.get_topleft().compat())

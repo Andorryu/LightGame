@@ -54,9 +54,6 @@ class Collider:
         halfx, halfy = self.size.x/2, self.size.y/2
         return self.pos.y - halfy, self.pos.x + halfx, self.pos.y + halfy, self.pos.x - halfx
 
-    def update(self, pos: Vector):
-        self.pos = pos
-
     def test_collision(self, other: Collider) -> bool:
         s_top, s_right, s_bottom, s_left = self.get_sides()
         o_top, o_right, o_bottom, o_left = other.get_sides()
@@ -64,13 +61,17 @@ class Collider:
         if s_top < o_bottom and s_bottom > o_top and s_right > o_left and s_left < o_right:
             result = True
         return result
+    
+    def get_topleft(self):
+        sides = self.get_sides()
+        return Vector(sides[3], sides[0])
 
     def update_hard_collision(self, pos: Vector, other: Collider) -> Vector:
         """
             Use this instead of update or test_collision to sync position and stop the object if it collides.
         """
         lastpos = self.pos        
-        self.update(pos)
+        self.pos = pos
 
         if self.test_collision(other):
             # get points for drawing lines

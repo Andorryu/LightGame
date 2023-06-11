@@ -1,6 +1,7 @@
 
 from __future__ import annotations
 from utils.vector import Vector
+import math
 
 class Line:
     def __init__(self, p1: Vector, p2: Vector) -> None:
@@ -13,13 +14,26 @@ class Line:
         """
             find the point at which the two lines intersect
         """
-        x = (other.y_intercept - self.y_intercept)/(self.slope - other.slope)
-        y = (other.slope*self.y_intercept - self.slope*other.y_intercept)/(other.slope - self.slope)
+
+        if self.slope == other.slope:
+            return None
+        elif self.slope == math.inf:
+            x = self.p1.x
+            y = other.slope*x + other.y_intercept
+        elif other.slope == math.inf:
+            x = self.p1.x
+            y = self.slope*x + self.y_intercept
+        else:
+            x = (other.y_intercept - self.y_intercept)/(self.slope - other.slope)
+            y = (other.slope*self.y_intercept - self.slope*other.y_intercept)/(other.slope - self.slope)
         return Vector(x, y)
 
     def get_slope(self):
-        return (self.p2.y - self.p1.y)/(self.p2.x - self.p2.y)
-    
+        try:
+            return (self.p2.y - self.p1.y)/(self.p2.x - self.p1.x)
+        except ZeroDivisionError:
+            return math.inf
+
     def get_y_intercept(self):
         return self.p1.y - self.slope*self.p1.x
 
@@ -88,10 +102,12 @@ class Collider:
             )
             for line in top_line, right_line, bottom_line, left_line:
                 collision_point = collideline.intersect(line)
-                if collision_point.x < max(self.pos.x, lastpos.x) and collision_point.x > min(self.pos.x, lastpos.x):
-                    if collision_point.y < max(self.pos.y, lastpos.y) and collision_point.y > min(self.pos.y, lastpos.y):
-                        self.pos = collision_point
+                if collision_point == None:
+                    continue
 
+                if collision_point.x <= max(self.pos.x, lastpos.x) and collision_point.x >= min(self.pos.x, lastpos.x):
+                    if collision_point.y <= max(self.pos.y, lastpos.y) and collision_point.y >= min(self.pos.y, lastpos.y):
+                        self.pos = Vector(round(collision_point.x), round(collision_point.y))
         return self.pos
 
 

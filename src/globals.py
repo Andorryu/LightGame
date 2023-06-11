@@ -21,7 +21,7 @@ def edge_trigger(condition: bool, trigger: bool):
     return trigger
 
 win_info = pygame.display.Info() # get display info
-screen_res = Vector(1600, 900, Vector.SCREEN_RES) # get display dimensions
+screen_res = Vector(1200, 675, Vector.SCREEN_RES) # get display dimensions
 
 # game space: resolution of the game's 2D space - the higher the better
 game_space = Vector(16000, 9000)

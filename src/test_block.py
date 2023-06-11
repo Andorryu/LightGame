@@ -27,7 +27,6 @@ class Block(Entity):
         self.moveup, self.moveright, self.movedown, self.moveleft = keys[pygame.K_w], keys[pygame.K_d], keys[pygame.K_s], keys[pygame.K_a]
 
     def update(self, platforms: list[Platform]):
-        last_pos = self.pos # position from last frame
 
         # update physics
         self.velocity = Vector(0, 0)
